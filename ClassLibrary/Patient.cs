@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirusDynamicsSimulation
+namespace ClassLibrary
 {
     class Patient
     {
@@ -35,15 +35,26 @@ namespace VirusDynamicsSimulation
                         random,
                         v.RepreduceChance(InfectedCells / StartCells)
                     );
+                else // If NOT survived remove it from the list
+                {
+                    VirusPop.Remove(v);
+                    return;
+                }
                 if (v.IsRepreduced) InfectedCells++;
             }
         }
-          
+
         private bool chanceGenerator(Random random, double rate)
         {
             if (random.NextDouble() <= rate)
                 return true;
             return false;
+        }
+
+        public override string ToString()
+        {
+            return
+                $"\tInfected cells: {InfectedCells}\n\tHealthy cells: {StartCells - InfectedCells}\n\tVirus population size: {VirusPop.Count}";
         }
     }
 }

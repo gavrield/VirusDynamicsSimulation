@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirusDynamicsSimulation
+namespace ClassLibrary
 {
     class Virus
     {
@@ -18,12 +18,12 @@ namespace VirusDynamicsSimulation
             get { return reproduceProb; }
             set
             {
-                if ( value < 0.0 || value > 1.0)
+                if (value < 0.0 || value > 1.0)
                     throw new ArgumentOutOfRangeException(
                    $"{nameof(value)} must be between 0 and 1.");
                 reproduceProb = value;
             }
-        } 
+        }
         public Double ClearanceProb
         {
             get { return clearanceProb; }
