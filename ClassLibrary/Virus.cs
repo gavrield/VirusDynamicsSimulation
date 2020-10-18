@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Virus
+    public class Virus: IVirus
     {
         private Double reproduceProb;
         private Double clearanceProb;
@@ -49,7 +49,7 @@ namespace ClassLibrary
             this.IsRepreduced = false;
         }
 
-        public Double RepreduceChance(double capacity)
+        public double RepreduceChance(double capacity)
         {
             return ReproduceProb * (1 - capacity);
         }

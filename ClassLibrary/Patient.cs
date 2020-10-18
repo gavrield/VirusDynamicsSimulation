@@ -10,24 +10,39 @@ namespace ClassLibrary
     {
         public int StartCells { get; set; }
         public int InfectedCells { get; set; }
-        public List<Virus> VirusPop { get; set; }
+        public List<IVirus> VirusPop { get; set; }
 
         public Patient(int startCells, int startVirusPop, Double reproduceProb, Double clearanceProb)
         {
             this.InfectedCells = 0;
             this.StartCells = startCells;
-            VirusPop = new List<Virus>();
+            VirusPop = new List<IVirus>();
             for (int i = 0; i < startVirusPop; i++)
             {
                 VirusPop.Add(new Virus(reproduceProb, clearanceProb));
+            }
+        }
+        public Patient(int startCells, int startVirusPop,
+           double reproduceProb, double clearanceProb,
+           List<bool> meds, double mutationProb)
+        {
+            this.InfectedCells = 0;
+            this.StartCells = startCells;
+            VirusPop = new List<IVirus>();
+            for (int i = 0; i < startVirusPop; i++)
+            {
+                VirusPop.Add(new VirusWithMeds
+                    (reproduceProb, clearanceProb, meds, mutationProb)
+                    );
             }
         }
 
         public void PatientUpdate()
         {
             Random random = new Random();
-            foreach (Virus v in VirusPop)
+            foreach (IVirus v in VirusPop)
             {
+                
                 v.SurvivalState = chanceGenerator(random, 1 - v.ClearanceProb);
                 if (v.SurvivalState)
                     v.IsRepreduced = chanceGenerator
@@ -44,7 +59,7 @@ namespace ClassLibrary
             }
         }
 
-        private bool chanceGenerator(Random random, double rate)
+        static public bool chanceGenerator(Random random, double rate)
         {
             if (random.NextDouble() <= rate)
                 return true;
@@ -54,7 +69,7 @@ namespace ClassLibrary
         public override string ToString()
         {
             return
-                $"\tInfected cells: {InfectedCells}\n\tHealthy cells: {StartCells - InfectedCells}\n\tVirus population size: {VirusPop.Count}";
+                $"\tInfected cells: {InfectedCells}\n\tHealthy cells: {StartCells - InfectedCells}\n\tVirus population size: {VirusPop.Count}\n";
         }
     }
 }
