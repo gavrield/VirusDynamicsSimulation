@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class Virus
+    public class Virus
     {
         private Double reproduceProb;
         private Double clearanceProb;
@@ -35,6 +35,10 @@ namespace ClassLibrary
                 clearanceProb = value;
             }
 
+        }
+        public override string ToString()
+        {
+            return $"Reproduce probability: {ReproduceProb}\nClear probability: {ClearanceProb}\nSurvived: {SurvivalState}\nReproduce: {IsRepreduced}\n";
         }
 
         public Virus(Double reproduceProb, Double clearanceProb)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class Patient
+    public class Patient
     {
         public int StartCells { get; set; }
         public int InfectedCells { get; set; }
