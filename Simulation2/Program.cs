@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary;
 
-namespace Simulation2
+namespace Simulation2._1
 {
     class Program
     {

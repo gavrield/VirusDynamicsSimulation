@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace simulation3
+namespace Simulation2._2
 {
     class Program
     {
