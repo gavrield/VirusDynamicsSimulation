@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary;
+using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace Simulation2._1
 {
@@ -18,6 +21,7 @@ namespace Simulation2._1
 
         static void Main(string[] args)
         {
+            List<Record> records = new List<Record>();
             var meds = new List<bool>();
             meds.Add(MED_IMMUNITY);
             Patient patient = 
@@ -30,14 +34,18 @@ namespace Simulation2._1
                     meds,
                     MUTATION_PROBABILITY
                 );
-
             int stopedAfter = 0;
             for(int i = 1; i <= 150; i++)
             {
                 if (patient.HealthyCells == 0) break;
                 stopedAfter++;
                 patient.PatientUpdate();
-                
+                records.Add(new Record
+                {
+                    HealthyCells = patient.HealthyCells,
+                    InfectedCells = patient.InfectedCells,
+                    NumOfViruses = patient.VirusPop.Count
+                });
             }
             Console.WriteLine($"\nAfter {stopedAfter} simulations WITHOUT meds:\n");
             Console.WriteLine(patient);
@@ -49,11 +57,24 @@ namespace Simulation2._1
                 if (patient.HealthyCells == 0) break;
                 stopedAfter++;
                 patient.PatientUpdate();
-                
+                records.Add(new Record
+                {
+                    HealthyCells = patient.HealthyCells,
+                    InfectedCells = patient.InfectedCells,
+                    NumOfViruses = patient.VirusPop.Count
+                });
             }
             Console.WriteLine($"\nAfter {stopedAfter} simulations WITH meds:\n");
             Console.WriteLine(patient);
+            var path ="..//..//records//sim2_1.csv";
+            using (var writer = new StreamWriter(path))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(records);
+            }
 
         }
     }
+
+
 }

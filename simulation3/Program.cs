@@ -1,6 +1,9 @@
 ﻿using ClassLibrary;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +24,11 @@ namespace Simulation2._2
             var meds = new List<bool>();
             meds.Add(MED_IMMUNITY);
             Patient patient;
-
+            List<Record> records;
             int[] iter = {0, 75, 150, 300 }; 
             for (int simul = 0; simul < 4; simul++)
             {
+                records = new List<Record>();
                 Console.WriteLine("Simulation {0}:\n", simul + 1);
                 patient = new Patient
                   (
@@ -42,6 +46,12 @@ namespace Simulation2._2
                     if (patient.HealthyCells == 0) break;
                     stopedAfter++;
                     patient.PatientUpdate();
+                    records.Add(new Record
+                    {
+                        HealthyCells = patient.HealthyCells,
+                        InfectedCells = patient.InfectedCells,
+                        NumOfViruses = patient.VirusPop.Count
+                    });
 
                 }
                 Console.WriteLine($"\n\tAfter {stopedAfter} simulations WITHOUT meds:\n");
@@ -54,11 +64,23 @@ namespace Simulation2._2
                     if (patient.HealthyCells == 0) break;
                     stopedAfter++;
                     patient.PatientUpdate();
+                    records.Add(new Record
+                    {
+                        HealthyCells = patient.HealthyCells,
+                        InfectedCells = patient.InfectedCells,
+                        NumOfViruses = patient.VirusPop.Count
+                    });
 
                 }
                 Console.WriteLine($"\n\tAfter {stopedAfter} simulations WITH meds:\n");
                 Console.WriteLine("\t" + patient);
 
+                var path = $"../../records/sim2_2_{simul + 1}.csv";
+                using (var writer = new StreamWriter(path))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(records);
+                }
             }
            
         }

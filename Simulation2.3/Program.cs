@@ -1,6 +1,9 @@
 ﻿using ClassLibrary;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +23,10 @@ namespace Simulation2._3
         {
             var meds = new List<bool>();
             Patient patient;
-
+            List<Record> records;
             for (int m = 1; m <= 5; m++)
             {
+                records = new List<Record>();
                 meds.Add(MED_IMMUNITY);
                 patient = new Patient
                 (
@@ -40,10 +44,22 @@ namespace Simulation2._3
                     if (patient.HealthyCells == 0) break;
                     stopedAfter++;
                     patient.PatientUpdate();
+                    records.Add(new Record
+                    {
+                        HealthyCells = patient.HealthyCells,
+                        InfectedCells = patient.InfectedCells,
+                        NumOfViruses = patient.VirusPop.Count
+                    });
 
                 }
                 Console.WriteLine($"\n\tAfter {stopedAfter} simulations WITH {m} meds:\n");
                 Console.WriteLine(patient);
+                var path = $"../../records/sim2_3_{m}.csv";
+                using (var writer = new StreamWriter(path))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(records);
+                }
             }
         }
     }
