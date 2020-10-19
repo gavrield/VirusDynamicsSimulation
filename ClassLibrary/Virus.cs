@@ -51,7 +51,9 @@ namespace ClassLibrary
 
         public double RepreduceChance(double capacity)
         {
-            return ReproduceProb * (1 - capacity);
+            if (capacity < 1)
+                return ReproduceProb * (1 - capacity);
+            else return 0.0;
         }
 
     }

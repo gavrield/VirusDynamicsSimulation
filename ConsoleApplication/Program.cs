@@ -20,11 +20,10 @@ namespace VirusDynamicsSimulation
                 (CELLS, VIRUSES, REPRODUCE_PROBABILITY, CLEARANCE_PROBABILITY);
             Console.WriteLine("\n\nBefore simulation:");
             Console.WriteLine(patient);
-            Console.WriteLine("\n\nAfter 10 simulations:");
+            
+            Console.WriteLine("\n\nAfter simulation:");
             patient.PatientUpdate();
             Console.WriteLine(patient);
-            //var v = new VirusWithMeds(REPRODUCE_PROBABILITY, CLEARANCE_PROBABILITY, new List<bool>(new bool[3]), 0.005);
-            //Console.WriteLine(v);
 
         }
     }
